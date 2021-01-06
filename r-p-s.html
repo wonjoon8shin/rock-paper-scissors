@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Rock Paper Scissors</title>
+    </head>
+    <body>
+        <script>
+            let playerScore = 0;
+            let computerScore = 0;    
+
+            function computerPlay() {
+                let action = Math.floor(Math.random() * 3);
+                if(action === 0) {
+                    return "Rock";
+                } else if(action === 1) {
+                    return "Paper";
+                } else {
+                    return "Scissor";
+                }
+            }
+
+            function playRound(playerSelection, computerSelection) {
+                let player = playerSelection.slice(0, 1).toUpperCase() + playerSelection.slice(1).toLowerCase();
+                let computer = computerSelection.slice(0, 1).toUpperCase() + computerSelection.slice(1).toLowerCase();
+
+                if(player === computer) {
+                    return "You Tied!"
+                } else if ((player === "Rock" && computer === "Scissor") ||
+                           (player === "Scissor" && computer === "Paper") ||
+                           (player === "Paper" && computer === "Rock")){
+                            playerScore++;
+                            return "You Win! " + player + " beats " + computer + "."
+                } else {
+                    computerScore++;
+                    return "You Lose! " + computer + " beats " + player + "."
+                }
+            }    
+            
+            function game() {
+                for(let i = 0; i < 5; i++) {
+                    player = window.prompt("Rock Paper or Scissor?");
+                    console.log(playRound(player, computerPlay()));
+                }
+                if(playerScore > computerScore) {
+                    console.log("You Won!!! The Score is: " + playerScore + " : " + computerScore);
+                } else if(playerScore === computerScore) {
+                    console.log("You Tied! The Score is: " + playerScore + " : " + computerScore);
+                } else {
+                    console.log("You Lost... The Score is: " + playerScore + " : " + computerScore);
+                }
+            }
+
+            game();
+        </script>
+    </body>
+</html>
