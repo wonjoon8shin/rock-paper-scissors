@@ -5,9 +5,21 @@
         <title>Rock Paper Scissors</title>
     </head>
     <body>
+        <div id="results"></div>
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissor">Scissor</button>
         <script>
             let playerScore = 0;
-            let computerScore = 0;    
+            let computerScore = 0; 
+            let playerSelection; 
+            const buttons = document.querySelectorAll("button");
+            buttons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    playerSelection = button.id;
+                    playRound(playerSelection, computerPlay());
+                });
+            });
 
             function computerPlay() {
                 let action = Math.floor(Math.random() * 3);
@@ -23,35 +35,55 @@
             function playRound(playerSelection, computerSelection) {
                 let player = playerSelection.slice(0, 1).toUpperCase() + playerSelection.slice(1).toLowerCase();
                 let computer = computerSelection.slice(0, 1).toUpperCase() + computerSelection.slice(1).toLowerCase();
+                let result;
 
                 if(player === computer) {
-                    return "You Tied!"
+                    result = "You Tied. No points.";
                 } else if ((player === "Rock" && computer === "Scissor") ||
                            (player === "Scissor" && computer === "Paper") ||
                            (player === "Paper" && computer === "Rock")){
                             playerScore++;
-                            return "You Win! " + player + " beats " + computer + "."
+                            result = "You Win! " + playerScore + " : " + computerScore + ".";
                 } else {
                     computerScore++;
-                    return "You Lose! " + computer + " beats " + player + "."
+                    result = "You Lose. " + playerScore + " : " + computerScore + ".";
                 }
-            }    
-            
-            function game() {
-                for(let i = 0; i < 5; i++) {
-                    player = window.prompt("Rock Paper or Scissor?");
-                    console.log(playRound(player, computerPlay()));
-                }
-                if(playerScore > computerScore) {
-                    console.log("You Won!!! The Score is: " + playerScore + " : " + computerScore);
-                } else if(playerScore === computerScore) {
-                    console.log("You Tied! The Score is: " + playerScore + " : " + computerScore);
-                } else {
-                    console.log("You Lost... The Score is: " + playerScore + " : " + computerScore);
+                
+                const results = document.querySelector('#results');
+                const finalResult = document.createElement('div');
+                finalResult.textContent = result;
+                results.appendChild(finalResult); 
+
+                if(playerScore >= 5 || computerScore >=5) {
+                    const buttons = document.querySelectorAll("button");
+                    buttons.forEach((button) => {
+                        button.disabled = true;
+                    });
+                    if(playerScore>=5) {
+                        finalResult.textContent = "You Won!!! The Score is: " + playerScore + " : " + computerScore;
+                        results.appendChild(finalResult);
+                    } else {
+                        finalResult.textContent = "You Lost... The Score is: " + playerScore + " : " + computerScore;
+                        results.appendChild(finalResult);
+                    }
+                    isPlayAgain()
                 }
             }
-
-            game();
+            function isPlayAgain() {
+                playAgain = prompt("Play Again? Y/N: ");
+                    if(playAgain === "Y") {
+                        resetGame();
+                    } else if(playAgain === "N") {
+                        window.open('','_self').close();
+                    } else {
+                        isPlayAgain()
+                    }
+            }
+            function resetGame() {
+                container.textContent = "";
+                playerScore = 0;
+                computerScore = 0;
+            }
         </script>
     </body>
 </html>
